@@ -1,8 +1,10 @@
 # Finger Quest
 
-## Deployed: http://fingerquest.surge.sh/
+## Deployed:
 
-## Descritption
+http://fingerquest.surge.sh/
+
+## Description
 
 A humorous game to take out frustration on your favorite celebrities:
 
