@@ -81,8 +81,13 @@ class Bullet {
           Bullet.clearBullets();
           setTimeout(function () {
             alert(`${Player.backpack[Player.backpack.length - 1].name}! ${Player.backpack[Player.backpack.length - 1].description}`)
-            box1.remove();
-            Boss.createBoss();
+            if (Player.ammo === 0){
+              Player.status = "loss"
+              Game.endGame()
+            }else{
+              box1.remove();
+              Boss.createBoss();
+            }
           }, 1000);
         }, 10);
 

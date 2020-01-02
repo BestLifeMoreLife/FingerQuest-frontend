@@ -1,6 +1,20 @@
 let keys = []
 class EventListener{
 
+  static welcomeListeners(){
+    document.getElementById("start-game").addEventListener("click", function(){
+      document.getElementById("welcome-screen").remove()
+      document.getElementById("game").style.display = "inline-block"
+      document.getElementById("player-stats").style.display = "inline-block"
+      document.getElementById("boss-hp").style.display = "inline-block"
+      Level.currLevel = Level.levelOne()
+      Box.setUpBoxes()
+      EventListener.movementListeners()
+      Game.runInputCheck()
+
+    })
+  }
+
   static movementListeners(){
     // EventListener.leftListener()
     // EventListener.rightListener()
@@ -8,6 +22,16 @@ class EventListener{
     document.addEventListener('keydown', EventListener.keysPressed)
     document.addEventListener('keyup', EventListener.keysReleased)
 
+  }
+
+  static transitionListeners(){
+    document.getElementById("next-level").addEventListener("click", function(){
+      Level.changeLevel()
+      Game.renderGame()
+      Box.setUpBoxes()
+      document.getElementById("boss-health").innerHTML = 3
+
+    })
   }
 
 

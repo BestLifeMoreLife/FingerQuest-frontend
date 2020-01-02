@@ -23,8 +23,8 @@ class Boss{
   }
 
   static moveBoss(){
-    let bossInterval = setInterval(Boss.bossMovement, 70)
-    let bossShootInterval = setInterval(Boss.bossShoot, 1500)
+    let bossInterval = setInterval(Boss.bossMovement, Level.currLevel.bossSpd)
+    let bossShootInterval = setInterval(Boss.bossShoot, Level.currLevel.bossShootSpd)
     BOSSINTERVALS.push(bossInterval)
     BOSSINTERVALS.push(bossShootInterval)
 
@@ -60,7 +60,7 @@ class Boss{
   }
 
   static renderBoss(){
-    return '<div id="boss" style="bottom: 500px; left: 350px; height: 150px"><img src="http://www.pngmart.com/files/2/Drake-Face-PNG-Clipart.png" style="width: 100%; height: 100%"></div>'
+    return `<div id="boss" style="bottom: 500px; left: 350px; height: 150px"><img src=${Level.currLevel.bossImg} style="width: 100%; height: 100%"></div>`
   }
 
   static createBoss(){
@@ -68,20 +68,34 @@ class Boss{
     div.innerHTML = Boss.renderBoss();
     document.getElementById('game').appendChild(div);
     const audioDiv = document.createElement('div');
-    audioDiv.innerHTML = '<audio id="hotline" src="/Users/joshwasserman/Development/FingerQuest-project/Finger-Quest-Frontend/src/fingerquestmusic.mp3" autoplay></audio>';
+    const playerHitAudio = document.createElement('div');
+    const bossHitAudio = document.createElement('div');
+    audioDiv.innerHTML = `<audio id="background-audio" src=${Level.currLevel.backgroundSong} autoplay></audio>`;
+    playerHitAudio.innerHTML = `<audio id="playerHit-audio" src=${Level.currLevel.playerHitSound}></audio>`;
+    bossHitAudio.innerHTML = `<audio id="bossHit-audio" src=${Level.currLevel.bossHitSound}></audio>`;
     document.getElementById('game').appendChild(audioDiv);
+    document.getElementById('game').appendChild(playerHitAudio);
+    document.getElementById('game').appendChild(bossHitAudio);
+
 
     Boss.moveBoss()
   }
 
   static takeHit(){
+    document.getElementById("bossHit-audio").play()
+
     const bossHealth = document.getElementById('boss-health')
     Boss.health -= 1;
     console.log(Boss.health);
     bossHealth.innerHTML = `${Boss.health}`
     if (Boss.health === 0) {
-      alert("My Hotline Blingin'");
-      Game.endGame();
+        if (Level.currLevel.name === "Level 3"){
+          Game.endGame()
+        }else{
+          Game.transitionScreen()
+
+        }
+      // Game.endGame();
     }
   }
 

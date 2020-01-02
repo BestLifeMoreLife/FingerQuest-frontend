@@ -41,15 +41,18 @@ class Player{
       Bullet.createBulletDiv();
       Player.ammo--
       document.getElementById('player-ammo').innerHTML = `${Player.ammo}`;
-    } else if (Player.ammo === 0){
-      document.getElementById('player-ammo').innerHTML = "You Bout to Die";
-    }
+    } else if (Player.ammo === 0 && Boss.health > 1){
+      Player.status = "loss";
+      Game.endGame()
+    } 
 
 
   }
 
   static takeHit(){
+    document.getElementById("playerHit-audio").play()
     const playerHealth = document.getElementById('player-health')
+    document.body.append("")
     Player.health -= 1;
     playerHealth.innerHTML = `${Player.health}`
     if (Player.health === 0) {
@@ -57,10 +60,10 @@ class Player{
       Player.status = "loss";
       Game.endGame();
     }
-    
 
 
-    <source src="https://sound.peal.io/ps/audios/000/000/355/original/drake_4.mp3?1469744448" type="audio/mpeg">
+    //
+    // <source src="https://sound.peal.io/ps/audios/000/000/355/original/drake_4.mp3?1469744448" type="audio/mpeg">
   }
 }
 
@@ -68,3 +71,4 @@ Player.backpack = [];
 Player.health = 3;
 Player.ammo = 15;
 Player.status = ""
+Player.score = 0

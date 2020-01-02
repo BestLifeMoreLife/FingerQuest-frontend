@@ -12,7 +12,7 @@ class BossBullet {
     bossBullet.className = 'bossBullet'
     bossBullet.style.left = BOSS.style.left
     bossBullet.style.bottom = '470px'
-    bossBullet.innerHTML = '<img src="https://talksense.weebly.com/uploads/3/0/7/0/3070350/5385929_orig.png" style="width: 100%; height: 100%">'
+    bossBullet.innerHTML = `<img src=${Level.currLevel.bossBulletImg} style="width: 100%; height: 100%">`
     document.getElementById('game').appendChild(bossBullet)
 
     BOSSBULLETARRAY.push(bossBullet)
