@@ -1,10 +1,10 @@
 class Game {
 
-  static welcome(){
+  static welcome() {
     //welcome page
     let game = document.getElementById("game")
     let screen = document.createElement("div")
-    screen.innerHTML= Game.welcomeRender()
+    screen.innerHTML = Game.welcomeRender()
     screen.id = "welcome-screen"
     game.style.display = "none"
     document.getElementById("player-stats").style.display = "none"
@@ -15,7 +15,7 @@ class Game {
     // event listeners for start game
   }
 
-  static welcomeRender(){
+  static welcomeRender() {
     return `
       <h1> Finger Quest </h1>
       <h3> Instructions: </h3>
@@ -28,7 +28,7 @@ class Game {
   }
 
 
-  static renderGame(){
+  static renderGame() {
     let game = document.getElementById("game")
     game.innerHTML = ""
     game.innerHTML = `
@@ -39,13 +39,13 @@ class Game {
 
   }
 
-  static transitionScreen(){
+  static transitionScreen() {
     let game = document.getElementById("game")
     Player.score += 10
     Boss.health = 3
     game.innerHTML = ""
     game.innerHTML = Game.renderTransitionScreen()
-    BULLETINTERVALS.forEach(function(interval){
+    BULLETINTERVALS.forEach(function (interval) {
       clearInterval(interval)
     })
     BULLETSARRAY.length = 0
@@ -53,7 +53,7 @@ class Game {
     EventListener.transitionListeners()
   }
 
-  static renderTransitionScreen(){
+  static renderTransitionScreen() {
     return `
     <h1 style="color: white;"> You Beat ${Level.currLevel.name} </h1>
     <h3 style="color: white;"> Continue? </h3>
@@ -64,35 +64,35 @@ class Game {
     `
   }
 
-  static checkInput(){
+  static checkInput() {
     EventListener.doKeys()
 
   }
-  static runInputCheck(){
+  static runInputCheck() {
     let inputInterval = setInterval(Game.checkInput, 50)
   }
 
-  static lossRender(){
-   return `<img src="${Level.currLevel.playerLoseGif}" style="width: 100%; height: 50%"><div id="scorediv"><input type="text" id="username" placeholder="Enter Name"></input> <label style="background-color: white">Your Score: ${Player.score}</label>  <button id="submit">Submit</button></div>`
+  static lossRender() {
+    return `<img src="${Level.currLevel.playerLoseGif}" style="width: 100%; height: 50%"><div id="scorediv"><input type="text" id="username" placeholder="Enter Name"></input> <label style="background-color: white">Your Score: ${Player.score}</label>  <button id="submit">Submit</button></div>`
   }
-  static winRender(){
-   return `<img src="${Level.currLevel.bossLoseGif}" style="width: 100%; height: 50%"><div id="scorediv"><input type="text" id="username" placeholder="Enter Name"></input>  <label style="background-color: white">Your Score: ${Player.score}</label>  <button id="submit">Submit</button></div>`
+  static winRender() {
+    return `<img src="${Level.currLevel.bossLoseGif}" style="width: 100%; height: 50%"><div id="scorediv"><input type="text" id="username" placeholder="Enter Name"></input>  <label style="background-color: white">Your Score: ${Player.score}</label>  <button id="submit">Submit</button></div>`
   }
 
-  static endGame(){
-    document.removeEventListener("keydown", function(e){
+  static endGame() {
+    document.removeEventListener("keydown", function (e) {
       // e.preventDefault()
       const keyName = e.key;
       if (keyName === " ") {
-          console.log("Space")
-          // Player.movePlayerLeft()
+        console.log("Space")
+        // Player.movePlayerLeft()
       }
     })
-    BOSSBULLETINTERVALS.forEach(function(interval){
+    BOSSBULLETINTERVALS.forEach(function (interval) {
       clearInterval(interval)
     })
 
-    BOSSINTERVALS.forEach(function(interval){
+    BOSSINTERVALS.forEach(function (interval) {
       clearInterval(interval)
     })
     BOSSINTERVALS.length = 0
@@ -107,17 +107,21 @@ class Game {
     button.addEventListener("click", e => {
       e.preventDefault();
       const username = document.getElementById('username').value;
-      const jsonBody = {name: username, score: Player.score }
-      Adapter.findCreate(jsonBody);
-      document.getElementById("scorediv").innerHTML ='<h3 style="color:white;" id="endgame"> Try Again?</h3><br><button id="newgame"> New Game</button>'
-      document.getElementById("newgame").addEventListener("click", function(){
-        Player.status = ""
-        Player.ammo = 15
-        Level.currLevel = Level.levelOne()
-        Boss.health = 3
-        Game.welcome()
-        EventListener.welcomeListeners()
-      })
+      if (username) {
+        const jsonBody = { name: username, score: Player.score }
+        Adapter.findCreate(jsonBody);
+        document.getElementById("scorediv").innerHTML = '<h3 style="color:white;" id="endgame"> Try Again?</h3><br><button id="newgame"> New Game</button>'
+        document.getElementById("newgame").addEventListener("click", function () {
+          Player.status = ""
+          Player.ammo = 15
+          Level.currLevel = Level.levelOne()
+          Boss.health = 3
+          Game.welcome()
+          EventListener.welcomeListeners()
+        })
+      } else {
+        window.alert("username cannot be empty")
+      }
 
     })
   }
